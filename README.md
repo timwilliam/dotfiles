@@ -1,10 +1,13 @@
-# tims-dotfiles
+# Tim's Development Environment Setup
 
-My personal dotfiles repository
+Repository to organize all of my dotfiles to setup my preferred development environment.
 
+Many dotfiles are inspired and based on dotfiles template created by other wonderful developer.
+I used them as a base and the customized them to suit my needs.
 
+## Usage 
 
-## Usage
+TODO: Update installation method
 
 1. Install stow
    
