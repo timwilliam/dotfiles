@@ -36,9 +36,6 @@ catch {
 Remove-Variable @("newhash", "oldhash", "url")
 Remove-Item  "$env:temp/Microsoft.PowerShell_profile.ps1"
 
-# Import Terminal Icons
-Import-Module -Name Terminal-Icons
-
 # Find out if the current user identity is elevated (has admin rights)
 $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
 $principal = New-Object Security.Principal.WindowsPrincipal $identity
@@ -241,6 +238,14 @@ if (Test-Path($ChocolateyProfile)) {
 
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
 
+Import-Module posh-git
+Import-Module -Name Terminal-Icons
 
-## Final Line to set prompt
-oh-my-posh init pwsh --config https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/cobalt2.omp.json | Invoke-Expression
+Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -PredictionViewStyle ListView
+
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+
+oh-my-posh init pwsh --config https://raw.githubusercontent.com/timwilliam/dotfiles/main/powershell/myposhprompt.omp.json | Invoke-Expression
