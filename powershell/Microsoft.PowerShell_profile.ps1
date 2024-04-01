@@ -19,22 +19,28 @@
 ### more information about execution policies, run Get-Help about_Execution_Policies.
 
 #check for updates
+Write-Output "Checking for update ... "
+
 try{
     $url = "https://raw.githubusercontent.com/timwilliam/dotfiles/main/powershell/Microsoft.PowerShell_profile.ps1"
     $oldhash = Get-FileHash $PROFILE
     Invoke-RestMethod $url -OutFile "$env:temp/Microsoft.PowerShell_profile.ps1"
     $newhash = Get-FileHash "$env:temp/Microsoft.PowerShell_profile.ps1"
     if ($newhash -ne $oldhash) {
+        Write-Output "New profile update found! Updating ..."
         Get-Content "$env:temp/Microsoft.PowerShell_profile.ps1" | Set-Content $PROFILE
         . $PROFILE
         return
     }
 }
 catch {
-    Write-Error "unable to check for `$profile updates"
+    Write-Error "Unable to check for `$profile updates!"
 }
+
 Remove-Variable @("newhash", "oldhash", "url")
 Remove-Item  "$env:temp/Microsoft.PowerShell_profile.ps1"
+
+Write-Output "Load profile ... "
 
 # Find out if the current user identity is elevated (has admin rights)
 $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
