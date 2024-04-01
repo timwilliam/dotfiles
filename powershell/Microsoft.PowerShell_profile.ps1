@@ -23,11 +23,13 @@ Write-Output "Checking for update ... "
 
 try{
     $url = "https://raw.githubusercontent.com/timwilliam/dotfiles/main/powershell/Microsoft.PowerShell_profile.ps1"
-    $oldhash = Get-FileHash $PROFILE | ForEach-Object -MemberName Hash
+    $oldhash = Get-FileHash $PROFILE
     Invoke-RestMethod $url -OutFile "$env:temp/Microsoft.PowerShell_profile.ps1"
-    $newhash = Get-FileHash "$env:temp/Microsoft.PowerShell_profile.ps1" | ForEach-Object -MemberName Hash
+    $newhash = Get-FileHash "$env:temp/Microsoft.PowerShell_profile.ps1"
     if ($newhash -ne $oldhash) {
         Write-Output "New profile update found! Updating ..."
+        Write-Output "$oldhash"
+        Write-Output "$newhash"
         Get-Content "$env:temp/Microsoft.PowerShell_profile.ps1" | Set-Content $PROFILE
         . $PROFILE
         return
