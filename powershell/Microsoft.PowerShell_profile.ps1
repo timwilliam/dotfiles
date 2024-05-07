@@ -19,23 +19,23 @@
 ### more information about execution policies, run Get-Help about_Execution_Policies.
 
 #check for updates
-try{
-    $url = "https://raw.githubusercontent.com/timwilliam/dotfiles/main/powershell/Microsoft.PowerShell_profile.ps1"
-    $oldhash = Get-FileHash $PROFILE | ForEach-Object -MemberName Hash
-    Invoke-RestMethod $url -OutFile "$env:temp/Microsoft.PowerShell_profile.ps1"
-    $newhash = Get-FileHash "$env:temp/Microsoft.PowerShell_profile.ps1" | ForEach-Object -MemberName Hash
-    if ($newhash -ne $oldhash) {
-        Get-Content "$env:temp/Microsoft.PowerShell_profile.ps1" | Set-Content $PROFILE
-        . $PROFILE
-        return
-    }
-}
-catch {
-    Write-Error "Unable to check for `$profile updates!"
-}
+# try{
+#     $url = "https://raw.githubusercontent.com/timwilliam/dotfiles/main/powershell/Microsoft.PowerShell_profile.ps1"
+#     $oldhash = Get-FileHash $PROFILE | ForEach-Object -MemberName Hash
+#     Invoke-RestMethod $url -OutFile "$env:temp/Microsoft.PowerShell_profile.ps1"
+#     $newhash = Get-FileHash "$env:temp/Microsoft.PowerShell_profile.ps1" | ForEach-Object -MemberName Hash
+#     if ($newhash -ne $oldhash) {
+#         Get-Content "$env:temp/Microsoft.PowerShell_profile.ps1" | Set-Content $PROFILE
+#         . $PROFILE
+#         return
+#     }
+# }
+# catch {
+#     Write-Error "Unable to check for `$profile updates!"
+# }
 
-Remove-Variable @("newhash", "oldhash", "url")
-Remove-Item  "$env:temp/Microsoft.PowerShell_profile.ps1"
+# Remove-Variable @("newhash", "oldhash", "url")
+# Remove-Item  "$env:temp/Microsoft.PowerShell_profile.ps1"
 
 # Find out if the current user identity is elevated (has admin rights)
 $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -248,5 +248,19 @@ Set-PSReadLineOption -PredictionViewStyle ListView
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+
+# fuzzy finder configuration
+$env:FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+$env:FZF_DEFAULT_COMMAND='dir /s/b' # for absolute file paths
+
+function FuzzyEdit 
+{
+  Get-ChildItem . -Recurse -Attributes !Directory | Invoke-Fzf | % { vim $_ }
+}
+Set-Alias fe FuzzyEdit 
+
+# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
+Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
+Set-PsFzfOption -EnableFd -EnableAliasFuzzySetLocation
 
 oh-my-posh init pwsh --config https://raw.githubusercontent.com/timwilliam/dotfiles/main/powershell/myposhprompt.omp.json | Invoke-Expression
