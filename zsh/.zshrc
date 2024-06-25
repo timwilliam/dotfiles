@@ -103,8 +103,8 @@ fi
 alias python="python3"
 alias pip="pip3"
 
-# For fuzzy finder
-eval "$(fzf --zsh)"
+# Set up fzf key bindings and fuzzy completion
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # For MacOS
 # bindkey -e
