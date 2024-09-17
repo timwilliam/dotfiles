@@ -77,7 +77,7 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
-path+=('/usr/local/bin')
+path+=('/usr/local/bin' "$HOME/.local/bin")
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
