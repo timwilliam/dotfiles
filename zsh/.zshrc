@@ -84,11 +84,7 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='nvim'
-else
-  export EDITOR='nvim'
-fi
+export EDITOR='vim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -104,10 +100,10 @@ fi
 alias python="python3"
 alias pip="pip3"
 
-# Set up fzf key bindings and fuzzy completion
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 # For MacOS
 # bindkey -e
 # bindkey '\e\e[C' forward-word
 # bindkey '\e\e[D' backward-word 
+
+# Set up fzf key bindings and fuzzy completion
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
